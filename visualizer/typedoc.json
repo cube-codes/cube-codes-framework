@@ -1,0 +1,6 @@
+{
+	"out": "dist/docs",
+	"listInvalidSymbolLinks": true,
+	"name": "Cube Codes Visualizer",
+	"entryPoints": "src/index.rollup.ts"
+}

@@ -1,0 +1,33 @@
+{
+	"name": "@cube-codes/cube-codes-ide-worker",
+	"version": "1.0.0",
+	"type": "commonjs",
+	"main": "dist/package/index.js",
+	"types": "dist/package/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"test": "jest",
+		"build-browser": "rollup -c",
+		"build-docs": "typedoc && cpx 'node_modules/@cube-codes/cube-codes-model/dist/package/grammar.docs.*.html' 'dist/docs/' && typedoc --options editor-docs/typedoc.json && cpx 'node_modules/@cube-codes/cube-codes-model/dist/package/grammar.docs.*.html' 'dist/editor-docs/'",
+		"ci-build": "npm ci && npm run build && npm run test && npm run build-browser && npm run build-docs",
+		"ci-release": "npm run ci-build && npm publish --access public"
+	},
+	"files": [
+		"dist/package"
+	],
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^16.0.0",
+		"@rollup/plugin-node-resolve": "^11.2.0",
+		"@types/jest": "^26.0.21",
+		"cpx": "^1.5.0",
+		"jest": "^26.6.3",
+		"rollup": "^2.42.1",
+		"ts-jest": "^26.5.4",
+		"typedoc": "^0.20.32",
+		"typescript": "^4.2.3"
+	},
+	"dependencies": {
+		"@cube-codes/cube-codes-ide-common": "file:../ide-common",
+		"@cube-codes/cube-codes-model": "file:../model"
+	}
+}

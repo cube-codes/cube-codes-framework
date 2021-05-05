@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+
+	<script src="../dist/browser/browser.js"></script>
+	<script type="text/javascript">
+
+		let reset;
+		const load = async function () {
+
+			const spec = new CCV.CubeSpecification(3);
+			const solutionCondition = new CCV.CubeSolutionCondition(CCV.CubeSolutionConditionType.COLOR);
+			const cube = new CCV.Cube(spec, solutionCondition);
+			const visualizer = new CCV.CubeVisualizer(cube, document.getElementById('my-canvas'), 500);
+
+			reset = function() {
+				visualizer.situation.camera.resetPerspective();
+			}
+
+			console.log('before');
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.FRONT, 1, 1, 1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.RIGHT, 1, 1, 1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.UP, 1, 1, 1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.RIGHT, 1, 1, -1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.UP, 1, 1, -1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.FRONT, 1, 1, -1));
+			await cube.setState(CCV.CubeState.fromSolved(spec));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.FRONT, 1, 1, 1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.RIGHT, 1, 1, 1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.UP, 1, 1, 1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.RIGHT, 1, 1, -1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.UP, 1, 1, -1));
+			await cube.move(new CCV.CubeMove(spec, CCV.CubeFace.FRONT, 1, 1, -1));
+			console.log('after');
+
+		}
+
+	</script>
+
+</head>
+
+<body onload="load(); ">
+
+	<canvas id="my-canvas" style="width: 50vw; height: 50vh; background-color: #ddd; "></canvas>
+
+	<button onclick="reset(); ">Reset</button>
+
+</body>
+
+</html>

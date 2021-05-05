@@ -1,0 +1,6 @@
+{
+	"out": "dist/docs",
+	"listInvalidSymbolLinks": true,
+	"name": "Cube Codes IDE - App",
+	"entryPoints": "src/index.rollup.ts"
+}

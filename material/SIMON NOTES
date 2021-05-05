@@ -1,0 +1,20 @@
+@Lukas: 	
+
+* I dont understand the error in PermutationCubeState.equals
+
+* Note: I needed (for orbit) the "usual" solution condition, so (as I think you intended) I converted your CubeSolutionCondition into an interface and implemented a StrictCubeSolutionCondition and a ColorCubeSolutionCondition in the same file.  
+Now I dont understand anymore why we separate CubeSpecification and CubeSolutionCondition. Is this fine?
+
+* In ColorCubeLanguage there are in the end three little routines that probably can go in a single line inthe respective code above
+
+---------------
+
+Simon 
+
+CubeSolutionCondition: Need (for permutation) the weaker cubeSolutionCondition where face orientations are irrelevant. 
+
+PermutationCubeState: Use permutation library instead of array and self-programmed sgn
+
+PermutationCubeState: Define a scientific source for (or invent) cubelet numbering and orientation vectors 
+
+Orientation: Give an identification with the symmetric group S4

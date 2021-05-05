@@ -1,0 +1,35 @@
+CUBE.mrs.kante1()
+{
+//HANS liegt in der 1. Ebene (obersten Ebene)
+if(HANS v & HANS1 außen) move(FEFE');
+if(HANS v & HANS1 oben) nix zu tun;
+if(HANS r & HANS1 außen) move(R'F');
+if(HANS r & HANS1 oben) move(RRD'FF);
+if(HANS h & HANS1 außen) move(BE'F);
+if(HANS h & HANS1 oben) move(BBDDFF);
+if(HANS l & HANS1 außen) move(LF);
+if(HANS l & HANS1 oben) move(LE'F');
+//HANS liegt in der 2. Ebene (mittlere Ebene)
+if(HANS vr & HANS1 rechts) move(F');
+if(HANS vr & HANS1 vorne) move(EFE');
+if(HANS hr & HANS1 rechts) move(EEFEE);
+if(HANS hr & HANS1 hinten) move(EF'E');
+if(HANS hl & HANS1 links) move(EEF'EE);
+if(HANS hl & HANS1 hinten) move(E'FE);
+if(HANS vl & HANS1 links) move(F);
+if(HANS vl & HANS1 vorne) move(E'F'E);
+//HANS liegt in der 3. Ebene (unterste Ebene)
+if(HANS v & HANS1 außen) move(F'EF);
+if(HANS v & HANS1 unten) move(FF);
+if(HANS r & HANS1 außen) {move(D'); move(F'EF);}
+if(HANS r & HANS1 unten) move(D'FF);
+if(HANS h & HANS1 außen) {move(DD); move(F'EF);}
+if(HANS h & HANS1 unten) move(DDFF);
+if(HANS l & HANS1 außen) {move(D); move(F'EF);}
+if(HANS l & HANS1 unten) move(DFF);
+}
+CUBE.mrs.kantenkreuz1()
+{
+for(i=1; i<5; ++i)
+{CUBE.mrs.kante1(); move(y);}
+}

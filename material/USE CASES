@@ -1,0 +1,31 @@
+Würfel visualisieren, 
+bedienen, 
+Zugfolge eingaben (z.B. aus Buch) 
+Video generieren (TODO)
+
+Realen Würfel aufschreiben und importieren (z.B. um ihn lösen zu lassen) (TODO)
+Andererseits Zugfolge ausgeben (z.B. der Lösung) und am realen Würfel nachspielen (TODO)
+WürfelState oder Zugfolge in Webseite einbetten mit Link
+
+[zum Stoff: Permutationen lernen, Orbits verstehen]
+Permutationen von Zügen auf Ecken etc ausgeben, 
+Ordnung von Permutationen, am realen Würfel nachprüfen (typische Züge entstehen so) 
+Sehen dass der Orbit nicht ändert
+Würfel shuffeln und Orbits ausgeben, 
+Verdrehten Würfel oder Zerlegten Würfel eingeben
+Lösen lassen bis zu einem Standardvertreter (TODO)
+
+[zum Stoff: IT, Programmieren]
+Spielen mit Objektumgebung, Informationen herausziehen (z.B.)
+Einzelne Zugfolgen per Javascript Situationsangepasst
+Zweite, Erste, Letzte Ebene automatisch
+Vollständiger Lösungsalgorithmus und ensprechende Inspektoren liegen vor (FEHLT)
+
+Bluetooth Würfel?
+Mechanischer Wüfel?
+Challange/Benchmart?
+
+[....Mathematisce Challanges]
+Bessere Algorithmen 
+Lösungealgerithmen und Orbitformeln für NxNxN und/oder Bilder
+Interface zur Gruppentheorie

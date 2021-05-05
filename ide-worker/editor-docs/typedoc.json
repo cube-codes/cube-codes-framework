@@ -1,0 +1,7 @@
+{
+	"out": "dist/editor-docs",
+	"listInvalidSymbolLinks": true,
+	"name": "Cube Codes IDE - Editor",
+	"entryPoints": "src/index.rollup.ts",
+	"readme": "editor-docs/readme.md"
+}

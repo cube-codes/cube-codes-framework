@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"target": "ES2015",
+		"outDir": "dist/package",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"lib": ["es2015", "DOM"],
+		"inlineSourceMap": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noFallthroughCasesInSwitch": true,
+		"noErrorTruncation": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"src/**/*.ts"
+	]
+}
