@@ -75,11 +75,11 @@ jobs:
         asset_name: cube-codes-ide-worker-${{ steps.get_release.outputs.tag_name }}-docs.zip
         asset_content_type: application/zip
     - run: |
-        mkdir -p ide/dist/web/${{ steps.get_release.outputs.tag_name }}
-        cp --recursive --parents ide-app/index.html ide-app/favicon.ico ide-app/images ide-app/styles ide-app/dist/browser/browser.js ide/dist/web/${{ steps.get_release.outputs.tag_name }}
-        cp --recursive --parents ide-worker/worker.js ide-worker/dist/browser/browser.js ide-worker/dist/editor-docs ide/dist/web/${{ steps.get_release.outputs.tag_name }}
+        mkdir -p ide/dist/web/version/${{ steps.get_release.outputs.tag_name }}
+        cp --recursive --parents ide-app/index.html ide-app/favicon.ico ide-app/images ide-app/styles ide-app/dist/browser/browser.js ide/dist/web/version/${{ steps.get_release.outputs.tag_name }}
+        cp --recursive --parents ide-worker/worker.js ide-worker/dist/browser/browser.js ide-worker/dist/editor-docs ide/dist/web/version/${{ steps.get_release.outputs.tag_name }}
         cp ide-app/index.html ide/dist/web
-        sed -i -- 's/~~~versionDirectory\/../${{ steps.get_release.outputs.tag_name }}\/ide-app/g' ide/dist/web/index.html
+        sed -i -- 's/~~~versionDirectory\/../version\/${{ steps.get_release.outputs.tag_name }}\/ide-app/g' ide/dist/web/index.html
         sed -i -- 's/~~~version/${{ steps.get_release.outputs.tag_name }}/g' ide/dist/web/index.html
         cd ide/dist/web && zip -r ../web.zip . && cd ../../..
     - uses: actions/upload-release-asset@v1
