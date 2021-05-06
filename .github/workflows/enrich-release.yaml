@@ -3,6 +3,7 @@ on:
   release:
     types: [created]
 env:
+  NPM_CONFIG_LOGLEVEL: verbose
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   build:
@@ -24,7 +25,6 @@ jobs:
         cd ide-app    && npm --no-git-tag-version version ${{ steps.get_release.outputs.tag_name }} && npm run ci-release && cd ..
         cd ide-worker && npm --no-git-tag-version version ${{ steps.get_release.outputs.tag_name }} && npm run ci-release && cd ..
       env:
-        NPM_CONFIG_LOGLEVEL: verbose
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     - uses: actions/upload-release-asset@v1
       with:
