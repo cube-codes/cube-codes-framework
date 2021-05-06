@@ -14,3 +14,5 @@ jobs:
         cd ide-common && npm run ci-build && cd ..
         cd ide-app    && npm run ci-build && cd ..
         cd ide-worker && npm run ci-build && cd ..
+      env:
+        NPM_CONFIG_LOGLEVEL: verbose
