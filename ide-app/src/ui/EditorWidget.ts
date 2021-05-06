@@ -117,7 +117,7 @@ export class EditorWidget {
 		$('#editor-undo'           ).on('click', e => this.ace.undo());
 		$('#editor-redo'           ).on('click', e => this.ace.redo());
 		$('#editor-search'         ).on('click', e => new Search(this.ace, false));
-		$('#editor-docs'           ).on('click', e => window.open(`${this.ui.settings.workerDirectory}/dist/editor-docs/index.html`, '_BLANK'));
+		$('#editor-docs'           ).on('click', e => window.open(`${this.ui.settings.workerDirectory}/dist/editor-docs/`, '_BLANK'));
 		$('#editor-show-invisibles').on('click', e => this.ace.setOption('showInvisibles', !this.ace.getOption('showInvisibles')));
 		$('#editor-font-increase'  ).on('click', e => updateFontSize(true));
 		$('#editor-font-decrease'  ).on('click', e => updateFontSize(false));
