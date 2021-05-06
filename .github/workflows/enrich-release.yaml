@@ -75,6 +75,7 @@ jobs:
         asset_name: cube-codes-ide-worker-${{ steps.get_release.outputs.tag_name }}-docs.zip
         asset_content_type: application/zip
     - run: |
+        mkdir -p ide/dist/web/${{ steps.get_release.outputs.tag_name }}
         cp --recursive --parents ide-app/index.html ide-app/favicon.ico ide-app/images ide-app/styles ide-app/dist/browser/browser.js ide/dist/web/${{ steps.get_release.outputs.tag_name }}
         cp --recursive --parents ide-worker/worker.js ide-worker/dist/browser/browser.js ide-worker/dist/editor-docs ide/dist/web/${{ steps.get_release.outputs.tag_name }}
         cp ide-app/index.html ide/dist/web
