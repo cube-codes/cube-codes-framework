@@ -10,6 +10,7 @@ jobs:
         node-version: '12.x'
     - run: |
         npm install npm@latest -g
+    - run: |
         cd model      && npm run ci-build && cd ..
         cd visualizer && npm run ci-build && cd ..
         cd ide-common && npm run ci-build && cd ..
