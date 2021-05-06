@@ -9,7 +9,7 @@
 		"test": "jest",
 		"build-browser": "rollup -c",
 		"build-docs": "typedoc && cpx 'dist/package/grammar.docs.*.html' 'dist/docs/' && cpx 'node_modules/@cube-codes/cube-codes-model/dist/package/grammar.docs.*.html' 'dist/docs/' && typedoc --options editor-docs/typedoc.json && cpx 'dist/package/grammar.docs.*.html' 'dist/editor-docs/' && cpx 'node_modules/@cube-codes/cube-codes-model/dist/package/grammar.docs.*.html' 'dist/editor-docs/'",
-		"ci-build": "npm ci && npm run build && npm run test && npm run build-docs",
+		"ci-build": "npm ci && npm run build && npm run test && npm run build-browser && npm run build-docs",
 		"ci-release": "npm run ci-build"
 	},
 	"files": [

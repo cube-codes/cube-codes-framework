@@ -14,7 +14,7 @@ jobs:
       with:
         node-version: '12.x'
     - run: |
-        npm install npm@latest -g
+        npm install npm@7.11.2 -g
     - run: |
         cd model      && npm run ci-build && cd ..
         cd visualizer && npm run ci-build && cd ..

@@ -16,7 +16,7 @@ jobs:
         node-version: '12.x'
         registry-url: 'https://registry.npmjs.org'
     - run: |
-        npm install npm@latest -g
+        npm install npm@7.11.2 -g
     - run: |
         cd model      && npm --no-git-tag-version version ${{ steps.get_release.outputs.tag_name }} && npm run ci-release && cd ..
         cd visualizer && npm --no-git-tag-version version ${{ steps.get_release.outputs.tag_name }} && npm run ci-release && cd ..
