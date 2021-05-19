@@ -168,7 +168,7 @@ export class EditorWidget {
 		const color = BootstrapInfo.COLOR_CLASSES_BY_LEVEL.get(level)!;
 		const date = withDate ? `[${new Date().toLocaleTimeString('en-GB')}] ` : '';
 		
-		$(html`<div class="log text-${color}">${date}${message}</div>`).appendTo('#editor-log');
+		$(html`<div class="log text-${color}">${date}${String(message)}</div>`).appendTo('#editor-log');
 		
 		if ($('#editor-log-lock-scroll').hasClass('active')) {
 			$('#editor-log').scrollTop($('#editor-log').prop('scrollHeight'));

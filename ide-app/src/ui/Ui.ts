@@ -105,7 +105,7 @@ export class Ui {
 		const color = BootstrapInfo.COLOR_CLASSES_BY_LEVEL.get(level)!;
 		const icon = BootstrapInfo.ICONS_BY_LEVEL.get(level)!(this);
 
-		const toastElement = $(html`<div class="toast bg-${color} text-light" data-delay="${duration.toString()}"><div class="toast-header"><img src="${icon}" /><strong>${title}</strong><button type="button" class="ml-auto close" data-dismiss="toast" title="Close message">×</button></div><div class="toast-body">${message}</div></div>`).appendTo('#toast-zone');
+		const toastElement = $(html`<div class="toast bg-${color} text-light" data-delay="${duration.toString()}"><div class="toast-header"><img src="${icon}" /><strong>${String(title)}</strong><button type="button" class="ml-auto close" data-dismiss="toast" title="Close message">×</button></div><div class="toast-body">${String(message)}</div></div>`).appendTo('#toast-zone');
 		toastElement.on('hidden.bs.toast', () => {
 			toastElement.remove();
 		});
