@@ -1,5 +1,7 @@
 export * from './app-state/AppState';
 
+export * from './bluetooth/Test';
+
 export * from './cube-history/CubeHistory';
 export * from './cube-history/CubeHistoryChange';
 export * from './cube-history/CubeHistoryFutureCleaned';

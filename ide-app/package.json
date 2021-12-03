@@ -33,10 +33,13 @@
 		"@types/ace": "0.0.45",
 		"@types/bootstrap": "^5.0.9",
 		"@types/jquery": "^3.5.5",
+		"@types/three": "^0.126.1",
+		"@types/web-bluetooth": "^0.0.9",
 		"ace-builds": "^1.4.12",
 		"bootstrap": "^4.6.0",
 		"flex-splitter-directive": "^0.1.2",
 		"jquery": "^3.6.0",
-		"popper.js": "^1.16.1"
+		"popper.js": "^1.16.1",
+		"three": "^0.126.1"
 	}
 }

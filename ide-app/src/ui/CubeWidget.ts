@@ -5,6 +5,8 @@ import { CubeApi } from "@cube-codes/cube-codes-ide-common";
 import { CubeVisualizer } from "@cube-codes/cube-codes-visualizer";
 import { UiState } from "./UiState";
 import { CubeFace, Dimension } from "@cube-codes/cube-codes-model";
+import { Smartcube } from "../bluetooth/Test";
+import { Vector3 } from "three";
 
 export class CubeWidget {
 
@@ -47,6 +49,8 @@ export class CubeWidget {
 					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/arrow-repeat.svg" /><span>Reset Solved</span></button>
 		</div>
 		<div class="btn-group btn-group-sm ml-auto">
+			<button type="button" id="cube-view-bluetooth" class="btn btn-secondary" title="Connect to Smartcube"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/wifi.svg" /><span>Bluetooth</span></button>
 			<button type="button" id="cube-view-reset" class="btn btn-secondary" title="Reset cube view to standard (front and a little bit up and right face)"><img
 					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/geo-fill.svg" /><span>Reset View</span></button>
 			<button type="button" id="cube-speed" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" title="Adjust the speed/duration of animations on the cube"><img
@@ -123,6 +127,30 @@ export class CubeWidget {
 			await this.cubeApi.setSolved();
 		});
 
+		$('#cube-view-bluetooth').on('click', async e => {
+
+			const smartcube = await Smartcube.connect();
+			const c = this.visualizer.situation.camera;
+			const r = c.position.distanceTo(new Vector3(0,0,0));
+			const camLoc = new Vector3(0, 0, r);
+
+			while(true) {
+
+				const state = await smartcube.getState();
+				const quat = state.rotQuat2(this.ui);
+				const qi = quat.clone().invert();
+				const newCamLoc = camLoc.clone().applyQuaternion(qi);
+				c.position.set(newCamLoc.x, newCamLoc.y, newCamLoc.z);
+				c.quaternion.set(qi.x, qi.y, qi.z, qi.w);
+
+				await new Promise(r => setTimeout(r, 50));
+
+			}
+
+		});
+
+		$('#cube-view-reset').on('click', e => this.visualizer.situation.camera.resetPerspective());
+
 		const updateAnimationDuration = (d: number) => ((e: JQuery.ClickEvent<any, any, any, any>) => {
 			$(e.target).siblings().removeClass('checked');
 			$(e.target).addClass('checked');
@@ -132,8 +160,6 @@ export class CubeWidget {
 		$('#cube-speed-quick').on('click', updateAnimationDuration(200));
 		$('#cube-speed-normal').on('click', updateAnimationDuration(500));
 		$('#cube-speed-slow').on('click', updateAnimationDuration(1000));
-
-		$('#cube-view-reset').on('click', e => this.visualizer.situation.camera.resetPerspective());
 
 	}
 

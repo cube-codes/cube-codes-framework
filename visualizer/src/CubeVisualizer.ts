@@ -1,5 +1,5 @@
 import { WebGLRenderer } from 'three'
-import { OrbitControls } from '@three-ts/orbit-controls';
+//import { OrbitControls } from '@three-ts/orbit-controls';
 import { Cube } from '@cube-codes/cube-codes-model'
 import { AnimationQueue } from './AnimationQueue';
 import { MoveAnimation } from './animation/MoveAnimation';
@@ -12,7 +12,7 @@ export class CubeVisualizer {
 
 	readonly situation: CubeSituation
 
-	readonly cameraControls: OrbitControls
+	//readonly cameraControls: OrbitControls
 
 	readonly renderer: WebGLRenderer
 
@@ -22,9 +22,9 @@ export class CubeVisualizer {
 
 		this.situation = new CubeSituation(cube.spec, cube.solutionCondition, cube.getState(), this.canvas.clientWidth, this.canvas.clientHeight);
 
-		this.cameraControls = new OrbitControls(this.situation.camera, this.canvas);
-		this.cameraControls.enablePan = false;
-		this.cameraControls.enableZoom = false;
+		//this.cameraControls = new OrbitControls(this.situation.camera, this.canvas);
+		//this.cameraControls.enablePan = false;
+		//this.cameraControls.enableZoom = false;
 
 		this.renderer = new WebGLRenderer({
 			alpha: true,
@@ -70,7 +70,7 @@ export class CubeVisualizer {
 				this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight, false);
 			}
 			
-			this.cameraControls.update();
+			//this.cameraControls.update();
 			this.situation.light.position.copy(this.situation.camera.position);
 
 			this.renderer.render(this.situation.scene, this.situation.camera);
