@@ -149,10 +149,21 @@ export class EditorWidget {
 		$('#editor-font-decrease'  ).on('click', e => updateFontSize(false));
 		$('#editor-logs-clean'     ).on('click', e => $('#editor-log').empty());
 
+		$('#editor-prompt-modal').on('shown.bs.modal', e => {
+			$('#editor-prompt-modal-input').trigger('focus');
+			$('#editor-prompt-modal-input').trigger('select');
+		});
 		$('#editor-prompt-modal').on('hidden.bs.modal', e => {
 			
 			this.promptCallback(null);
 			this.promptCallback = input => {};
+
+		});
+		$('#editor-prompt-modal-input').on('keypress', e => {
+
+			if(e.which === 13) {
+				$('#editor-prompt-modal-ok').trigger('click');
+			}
 
 		});
 		$('#editor-prompt-modal-ok').on('click', e => {

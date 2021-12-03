@@ -5,8 +5,8 @@ export class UiViewMode implements Exportable<number>, Identifiable, Equalizable
 	private static readonly _all: Array<UiViewMode> = new Array();
 	private static readonly _allByName: Map<string, UiViewMode> = new Map();
 
-	static readonly NORMAL: UiViewMode = new UiViewMode(0, 'NORMAL');
-	static readonly HISTORY_PLAYER: UiViewMode = new UiViewMode(1, 'HISTORY_PLAYER');
+	static readonly NORMAL: UiViewMode = new UiViewMode(0, 'normal');
+	static readonly HISTORY_PLAYER: UiViewMode = new UiViewMode(1, 'historyPlayer');
 
 	static getAll(): ReadonlyArray<UiViewMode> {
 		return this._all;
