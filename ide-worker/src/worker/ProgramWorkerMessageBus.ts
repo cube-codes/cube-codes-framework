@@ -5,14 +5,14 @@ export class ProgramWorkerMessageBus {
 
 	readonly workerStartSync: MessageInbox<WorkerStartSync>
 
-	private readonly workerContinueSync: MessageInbox<WorkerCallbackSync>
+	private readonly workerCallbackSync: MessageInbox<WorkerCallbackSync>
 
-	private readonly promiseResolvesByMessageId: Map<string, (value: void | PromiseLike<void>) => void>
+	private readonly promiseResolvesByMessageId: Map<string, (value: any | PromiseLike<any>) => void>
 
 	constructor() {
 
 		this.workerStartSync = new MessageInbox(WorkerStartSyncType);
-		this.workerContinueSync = new MessageInbox(WorkerCallbackSyncType);
+		this.workerCallbackSync = new MessageInbox(WorkerCallbackSyncType);
 		this.promiseResolvesByMessageId = new Map();
 
 		self.onmessage = m => {
@@ -22,17 +22,17 @@ export class ProgramWorkerMessageBus {
 			}
 		};
 
-		this.workerContinueSync.on(m => {
+		this.workerCallbackSync.on(m => {
 			if(this.promiseResolvesByMessageId.has(m.originalId)) {
-				this.promiseResolvesByMessageId.get(m.originalId)!.call(this);
+				this.promiseResolvesByMessageId.get(m.originalId)!.call(this, m.data);
 				this.promiseResolvesByMessageId.delete(m.originalId);
 			}
 		});
 
 	}
 
-	async sendMessage(messageData: ProgramWorkerOutboundMessage): Promise<void> {
-		const promise = new Promise<void>(r => this.promiseResolvesByMessageId.set(messageData.id, r));
+	async sendMessage(messageData: ProgramWorkerOutboundMessage): Promise<any> {
+		const promise = new Promise<any>(r => this.promiseResolvesByMessageId.set(messageData.id, r));
 		self.postMessage(messageData);
 		return promise;
 	}

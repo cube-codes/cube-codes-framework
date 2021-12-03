@@ -8,7 +8,7 @@ import { HistoryWidget } from "./HistoryWidget";
 import { AppState, AutomaticActionType } from "../app-state/AppState";
 import { CubeWidget } from "./CubeWidget";
 import { Toast } from "bootstrap";
-import { html } from "./Html";
+import { html, escape } from "./Html";
 import { BootstrapInfo } from "./BootstrapInfo";
 import $ from "jquery";
 import "flex-splitter-directive";
@@ -17,6 +17,7 @@ import { UiStateChanged } from "./UiStateChanged";
 import { CubeHistoryState } from "../cube-history/CubeHistoryState";
 import { ProgramManagerState } from "../manager/ProgramManagerState";
 import { UiSettings } from "./UiSettings";
+import { UiViewMode } from "./UiViewMode";
 
 export class Ui {
 
@@ -32,7 +33,7 @@ export class Ui {
 
 	#editorWidget?: EditorWidget
 
-	constructor(readonly settings: UiSettings, readonly initialAppState: AppState, afterSetupActions: Array<(ui: Ui) => void>) {
+	constructor(readonly settings: UiSettings, readonly initialAppState: AppState, readonly viewMode: UiViewMode, afterSetupActions: Array<(ui: Ui) => void>) {
 
 		this.state = UiState.IDLE;
 		
@@ -46,6 +47,8 @@ export class Ui {
 		this.programManager.stateChanged.on(e => this.setState(e.newState === ProgramManagerState.IDLE ? UiState.IDLE : UiState.EXECUTING));
 
 		this.cubeHistory.restoreChanges(this.initialAppState.cubeHistoryEntries, this.initialAppState.cubeHistoryCurrentPosition).then(async () => {
+
+			$('body').addClass('viewMode-' + this.viewMode.name);
 
 			// Widgets
 			new HeaderWidget(this);
@@ -105,7 +108,7 @@ export class Ui {
 		const color = BootstrapInfo.COLOR_CLASSES_BY_LEVEL.get(level)!;
 		const icon = BootstrapInfo.ICONS_BY_LEVEL.get(level)!(this);
 
-		const toastElement = $(html`<div class="toast bg-${color} text-light" data-delay="${duration.toString()}"><div class="toast-header"><img src="${icon}" /><strong>${title}</strong><button type="button" class="ml-auto close" data-dismiss="toast" title="Close message">×</button></div><div class="toast-body">${message}</div></div>`).appendTo('#toast-zone');
+		const toastElement = $(html`<div class="toast bg-${color} text-light" data-delay="${duration.toString()}"><div class="toast-header"><img src="${icon}" /><strong>${escape(title)}</strong><button type="button" class="ml-auto close" data-dismiss="toast" title="Close message">×</button></div><div class="toast-body">${escape(message)}</div></div>`).appendTo('#toast-zone');
 		toastElement.on('hidden.bs.toast', () => {
 			toastElement.remove();
 		});

@@ -4,6 +4,7 @@ import { CubeSolutionCondition, CubeSpecification, CubeState } from "@cube-codes
 import { Level } from "@cube-codes/cube-codes-ide-common";
 import { AppState } from "../app-state/AppState";
 import { UiSettings } from "./UiSettings";
+import { UiViewMode } from "./UiViewMode";
 
 export class UiLoader {
 
@@ -17,12 +18,14 @@ export class UiLoader {
 
 			const afterSetupActions = new Array<(ui: Ui) => void>();
 			const initialAppState = await this.constructInitialAppState(afterSetupActions);
+			const viewMode = await this.constructViewMode(afterSetupActions);
 
-			this.#ui = new Ui(settings, initialAppState, afterSetupActions);
+			this.#ui = new Ui(settings, initialAppState, viewMode, afterSetupActions);
 
 		});
 
 	}
+	
 	async constructInitialAppState(afterSetupActions: Array<(ui: Ui) => void>): Promise<AppState> {
 
 		const parameters = new URLSearchParams(location.search);
@@ -60,6 +63,26 @@ export class UiLoader {
 		const cubeSpec = new CubeSpecification(Number.parseInt(parameters.get('cubeSpec') ?? '3'));
 		const cubeSolutionCondition = new CubeSolutionCondition(Number.parseInt(parameters.get('cubeSolutionCondition') ?? '1'));
 		return new AppState('', '', cubeSpec, cubeSolutionCondition, CubeState.fromSolved(cubeSpec), [], -1, '', 'none');
+	}
+	
+	async constructViewMode(afterSetupActions: Array<(ui: Ui) => void>): Promise<UiViewMode> {
+
+		const parameters = new URLSearchParams(location.search);
+
+		if (parameters.get('view') === null) {
+			return UiViewMode.NORMAL;
+		}
+		
+		let viewMode;
+		try {
+			viewMode = UiViewMode.getByName(parameters.get('view')!);
+		} catch(e) {
+			afterSetupActions.push(ui => ui.overlay(`Unknown view parameter: ${parameters.get('view')}`, undefined, Level.ERROR, 10000));
+			return UiViewMode.NORMAL;
+		}
+
+		return viewMode;
+
 	}
 
 	get ui(): Ui {

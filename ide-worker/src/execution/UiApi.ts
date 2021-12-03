@@ -9,12 +9,11 @@ export class UiApi {
 		await this.messageBus.sendMessage({
 			type: UiSyncType,
 			id: MessageIdGenerator.generate(),
-			logs: [{
-				message: message,
-				level: level,
-				withDate: withDate
-			}],
-			overlays: []
+			log: {
+				message: String(message),
+				level: Number(level),
+				withDate: Boolean(withDate)
+			}
 		});
 	}
 
@@ -38,13 +37,12 @@ export class UiApi {
 		await this.messageBus.sendMessage({
 			type: UiSyncType,
 			id: MessageIdGenerator.generate(),
-			logs: [],
-			overlays: [{
-				title: title,
-				message: message,
-				level: level,
-				duration: duration
-			}]
+			overlay: {
+				title: String(title),
+				message: String(message),
+				level: Number(level),
+				duration: Number(duration)
+			}
 		});
 	}
 
@@ -62,6 +60,19 @@ export class UiApi {
 
 	async overlayError(title: string, message: string = '', duration: number = 3000): Promise<void> {
 		await this.overlay(title, message, Level.ERROR, duration);
+	}
+
+	async prompt(title: string, message: string = '', prefilled: string = '', level: Level = Level.INFO): Promise<string | null> {
+		return await this.messageBus.sendMessage({
+			type: UiSyncType,
+			id: MessageIdGenerator.generate(),
+			prompt: {
+				title: String(title),
+				message: String(message),
+				prefilled: String(prefilled),
+				level: Number(level)
+			}
+		});
 	}
 
 }

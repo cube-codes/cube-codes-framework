@@ -1,4 +1,4 @@
-import { html } from "./Html";
+import { html, escape } from "./Html";
 import $ from "jquery";
 import { Ui } from "./Ui";
 import * as ACE from 'ace-builds';
@@ -14,6 +14,8 @@ export class EditorWidget {
 	private readonly ace: ACE.Ace.Editor
 
 	private fontSize: number
+
+	private promptCallback: (input: string | null) => void;
 
 	constructor(private readonly ui: Ui) {
 		
@@ -34,6 +36,7 @@ export class EditorWidget {
 		this.ace.setFontSize('12px');
 		this.ace.renderer.setScrollMargin(6, 0, 0, 0);
 		this.fontSize = 12;
+		this.promptCallback = input => {};
 
 		this.setupModelListeners();
 		this.setupActions();
@@ -93,6 +96,29 @@ export class EditorWidget {
 	<aside id="editor-log"></aside>
 </main>`).appendTo('#section-11');
 
+		$(html`
+<div id="editor-prompt-modal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header"><img class="mr-3" src="${this.ui.settings.appDirectory}/images/bootstrap-icons/input-cursor-text.svg" />
+				<h5 class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" title="Close window">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p></p>
+				<div class="form-group mb-0">
+					<input type="text" class="form-control" id="editor-prompt-modal-input" placeholder="Input" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="form-inline">
+					<button type="button" class="btn btn-primary" id="editor-prompt-modal-ok" title="OK">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>`).appendTo('body');
+
 	}
 
 	private setupModelListeners() {
@@ -122,6 +148,23 @@ export class EditorWidget {
 		$('#editor-font-increase'  ).on('click', e => updateFontSize(true));
 		$('#editor-font-decrease'  ).on('click', e => updateFontSize(false));
 		$('#editor-logs-clean'     ).on('click', e => $('#editor-log').empty());
+
+		$('#editor-prompt-modal').on('hidden.bs.modal', e => {
+			
+			this.promptCallback(null);
+			this.promptCallback = input => {};
+
+		});
+		$('#editor-prompt-modal-ok').on('click', e => {
+
+			const input = $('#editor-prompt-modal-input').val() as string;
+
+			this.promptCallback(input);
+			this.promptCallback = input => {};
+
+			$('#editor-prompt-modal .close').trigger('click');
+
+		});
 
 	}
 
@@ -168,7 +211,7 @@ export class EditorWidget {
 		const color = BootstrapInfo.COLOR_CLASSES_BY_LEVEL.get(level)!;
 		const date = withDate ? `[${new Date().toLocaleTimeString('en-GB')}] ` : '';
 		
-		$(html`<div class="log text-${color}">${date}${message}</div>`).appendTo('#editor-log');
+		$(html`<div class="log text-${color}">${date}${escape(message)}</div>`).appendTo('#editor-log');
 		
 		if ($('#editor-log-lock-scroll').hasClass('active')) {
 			$('#editor-log').scrollTop($('#editor-log').prop('scrollHeight'));
@@ -178,6 +221,14 @@ export class EditorWidget {
 
 	logSeparator(level: Level = Level.INFO, withDate: boolean = false): void {
 		this.log(`&nbsp;\n${'-'.repeat(80)}\n&nbsp;`, level, withDate);
+	}
+
+	prompt(title: string, message: string, prefilled: string, callback: (input: string | null) => void, level: Level = Level.INFO): void {
+		this.promptCallback = callback;
+		$('#editor-prompt-modal .modal-title').html(escape(title));
+		$('#editor-prompt-modal .modal-body > p').html(escape(message));
+		$('#editor-prompt-modal-input').val(prefilled);
+		$('#editor-prompt-modal').modal();
 	}
 
 }

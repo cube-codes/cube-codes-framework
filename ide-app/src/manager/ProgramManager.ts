@@ -60,13 +60,28 @@ export class ProgramManager {
 			});
 		});
 		this.workerContext.messageBus.uiSync.on(m => {
-			m.logs.forEach(logSync => this.ui.editorWidget.log(logSync.message, logSync.level, logSync.withDate));
-			m.overlays.forEach(overlaySync => this.ui.overlay(`Program: ${overlaySync.title}`, overlaySync.message, overlaySync.level, overlaySync.duration));
-			this.workerContext?.messageBus.send({
-				type: WorkerCallbackSyncType,
-				id: MessageIdGenerator.generate(),
-				originalId: m.id
-			});
+			if(m.log) {
+				this.ui.editorWidget.log(m.log.message, m.log.level, m.log.withDate);
+			}
+			if(m.overlay) {
+				this.ui.overlay(`Program: ${m.overlay.title}`, m.overlay.message, m.overlay.level, m.overlay.duration);
+			}
+			if(m.prompt) {
+				this.ui.editorWidget.prompt(`Program: ${m.prompt.title}`, m.prompt.message, m.prompt.prefilled, input => {
+					this.workerContext?.messageBus.send({
+						type: WorkerCallbackSyncType,
+						id: MessageIdGenerator.generate(),
+						originalId: m.id,
+						data: input
+					});
+				}, m.prompt.level);
+			} else {
+				this.workerContext?.messageBus.send({
+					type: WorkerCallbackSyncType,
+					id: MessageIdGenerator.generate(),
+					originalId: m.id
+				});
+			}
 		});
 		this.workerContext.messageBus.workerFinishedSync.on(m => {
 			this.setState(ProgramManagerState.IDLE);
