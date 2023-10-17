@@ -12,12 +12,15 @@ export class CubeWidget {
 
 	private readonly cubeApi: CubeApi
 
+	private editVisibility: Boolean
+
 	constructor(private readonly ui: Ui) {
 
 		this.markup();
 
 		this.visualizer = new CubeVisualizer(this.ui.cube, $('#cube-display > canvas').get(0) as HTMLCanvasElement, 500);
 		this.cubeApi = new CubeApi(this.ui.cube);
+		this.editVisibility = false;
 		
 		this.setupModelListeners();
 		this.setupActions();
@@ -47,6 +50,10 @@ export class CubeWidget {
 					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/arrow-repeat.svg" /><span>Reset Solved</span></button>
 		</div>
 		<div class="btn-group btn-group-sm ml-auto">
+			<button type="button" id="cube-visibility" class="btn btn-secondary" title="Edit the visibility of each facelet"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/eye.svg" /><span>Visibility</span></button>
+		</div>
+		<div class="btn-group btn-group-sm ml-2">
 			<button type="button" id="cube-view-reset" class="btn btn-secondary" title="Reset cube view to standard (front and a little bit up and right face)"><img
 					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/geo-fill.svg" /><span>Reset View</span></button>
 			<button type="button" id="cube-speed" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" title="Adjust the speed/duration of animations on the cube"><img
@@ -61,6 +68,22 @@ export class CubeWidget {
 			</div>
 		</div>
 	</aside>
+	<aside id="cube-visibility-toolbar" class="btn-toolbar">
+		<div class="btn-group btn-group-sm">
+			<button type="button" id="cube-visibility-all" class="btn btn-secondary" title="Show all facelets of the cube"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/eye-fill.svg" /><span>Show All</span></button>
+			<button type="button" id="cube-visibility-none" class="btn btn-secondary" title="Hide all facelets of the cube"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/eye-slash-fill.svg" /><span>Hide All</span></button>
+		</div>
+		<div class="btn-group btn-group-sm ml-auto">
+			<button type="button" id="cube-visibility-cancel" class="btn btn-danger" title="Cancel the editing of the facelets' visibility"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/x-lg.svg" /><span>Cancel</span></button>
+		</div>
+		<div class="btn-group btn-group-sm ml-2">
+			<button type="button" id="cube-visibility-apply" class="btn btn-primary" title="Apply the current facelets' visibility"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/check2.svg" /><span>Apply</span></button>
+		</div>
+	</aside>
 	<main id="cube-display"><canvas></canvas></main>
 	<aside id="cube-control"></aside>
 </main>`).appendTo('#section-10');
@@ -68,6 +91,12 @@ export class CubeWidget {
 	}
 
 	private setupModelListeners() {
+
+		this.visualizer.stickerClicked.on(e => {
+			if(this.editVisibility) {
+				e.sticker.material.opacity = e.sticker.material.opacity === 1 ? 0.1 : 1;
+			}
+		});
 
 		const addControl = (parent: JQuery<HTMLElement>, caption: string, title: string, moveAction: (angle: number) => void) => {
 			const control = $(html`
@@ -123,6 +152,24 @@ export class CubeWidget {
 			await this.cubeApi.setSolved();
 		});
 
+		$('#cube-visibility').on('click', e => {
+			this.ui.setState(UiState.EXECUTING);
+			this.editVisibility = true;
+			$('#cube').addClass('editMode');
+		});
+		$('#cube-visibility-cancel').on('click', e => {
+			this.ui.setState(UiState.IDLE);
+			this.editVisibility = false;
+			$('#cube').removeClass('editMode');
+		});
+		$('#cube-visibility-apply').on('click', e => {
+			this.ui.setState(UiState.IDLE);
+			this.editVisibility = false;
+			$('#cube').removeClass('editMode');
+		});
+
+		$('#cube-view-reset').on('click', e => this.visualizer.situation.camera.resetPerspective());
+
 		const updateAnimationDuration = (d: number) => ((e: JQuery.ClickEvent<any, any, any, any>) => {
 			$(e.target).siblings().removeClass('checked');
 			$(e.target).addClass('checked');
@@ -133,8 +180,6 @@ export class CubeWidget {
 		$('#cube-speed-normal').on('click', updateAnimationDuration(500));
 		$('#cube-speed-slow').on('click', updateAnimationDuration(1000));
 
-		$('#cube-view-reset').on('click', e => this.visualizer.situation.camera.resetPerspective());
-
 	}
 
 	private setupBlocking() {
@@ -143,6 +188,7 @@ export class CubeWidget {
 			const uiActive = this.ui.getState() !== UiState.IDLE;
 			$('#cube-shuffle'     ).prop('disabled', uiActive);
 			$('#cube-reset'       ).prop('disabled', uiActive);
+			$('#cube-visibility'  ).prop('disabled', uiActive);
 			$('.cube-move'        ).prop('disabled', uiActive);
 			$('.cube-move-inverse').prop('disabled', uiActive);
 		};

@@ -99,7 +99,8 @@ export class HeaderWidget {
 			</div>
 			<div class="modal-footer">
 				<div class="form-inline">
-					<button type="button" class="btn btn-primary" id="header-save-modal-save" title="Save the current scenario to file">Save</button>
+					<button type="button" class="btn btn-primary" id="header-save-modal-save" title="Save the current scenario to file"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/download.svg" /><span>Save & Download</span></button>
 				</div>
 			</div>
 		</div>
@@ -151,11 +152,13 @@ export class HeaderWidget {
 				</div>
 			</div>
 			<div class="modal-footer">
-				<div class="alert alert-danger" style="flex: 1; ">This app link expires after 30 days!</div>
+				<div class="alert alert-danger" style="flex: 1; ">This link expires after 30 days!</div>
 				<div class="form-inline link-generator">
-					<button type="button" class="btn btn-primary" id="header-share-modal-app-link-generate" title="Generate App Link">Generate</button>
-					<input type="text" class="form-control" id="header-share-modal-app-link" readonly="readonly" placeholder="Generate App Link ..." />
-					<button type="button" class="btn btn-primary" id="header-share-modal-app-link-copy" title="Copy generated app link">Copy</button>
+					<button type="button" class="btn btn-primary" id="header-share-modal-link-generate" title="Generate Link"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/share-fill.svg" /><span>Generate</span></button>
+					<input type="text" class="form-control ml-2" id="header-share-modal-link" readonly="readonly" placeholder="..." />
+					<button type="button" class="btn btn-secondary" id="header-share-modal-link-copy" title="Copy generated link"><img
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/clipboard.svg" /><span>Copy</span></button>
 				</div>
 			</div>
 		</div>
@@ -225,16 +228,16 @@ export class HeaderWidget {
 
 		});
 
-		const emptyAppLink = () => {
-			$('#header-share-modal-app-link').val('');
+		const emptyLink = () => {
+			$('#header-share-modal-link').val('');
 		};
-		$('#header-share').on('click', emptyAppLink);
-		$('#header-share-modal-title').on('change', emptyAppLink);
-		$('#header-share-modal-description').on('change', emptyAppLink);
-		$('#header-share-modal-reduce-history').on('click', emptyAppLink);
-		$('#header-share-modal-omit-code').on('click', emptyAppLink);
-		$('#header-share-modal-automatic-action').on('change', emptyAppLink);
-		$('#header-share-modal-app-link-generate').on('click', async e => {
+		$('#header-share').on('click', emptyLink);
+		$('#header-share-modal-title').on('change', emptyLink);
+		$('#header-share-modal-description').on('change', emptyLink);
+		$('#header-share-modal-reduce-history').on('click', emptyLink);
+		$('#header-share-modal-omit-code').on('click', emptyLink);
+		$('#header-share-modal-automatic-action').on('change', emptyLink);
+		$('#header-share-modal-link-generate').on('click', async e => {
 
 			const title = $('#header-share-modal-title').val() as string;
 			const description = $('#header-share-modal-description').val() as string;
@@ -262,11 +265,11 @@ export class HeaderWidget {
 				method: 'POST'
 			});
 
-			$('#header-share-modal-app-link').val(`${location.protocol}//${location.hostname}${location.pathname}?init=loadFromUrl&url=${response.url}`);
+			$('#header-share-modal-link').val(`${location.protocol}//${location.hostname}${location.pathname}?init=loadFromUrl&url=${response.url}`);
 
 		});
-		$('#header-share-modal-app-link-copy').on('click', e => {
-			$('#header-share-modal-app-link').trigger('select');
+		$('#header-share-modal-link-copy').on('click', e => {
+			$('#header-share-modal-link').trigger('select');
 			document.execCommand('copy');
 		});
 

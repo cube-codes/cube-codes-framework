@@ -174,26 +174,26 @@
     padding: 4px;
 }
 
-.viewMode-historyPlayer .btn-sm, .viewMode-historyPlayer .btn-group-sm > .btn {
+.viewMode-historyPlayer .btn {
     padding: 0 0.325rem !important;
 }
 
-.btn-sm > img, .btn-group-sm > .btn > img {
+.btn > img {
     filter: invert(1);
     margin-top: -4px;
     width: 16px;
 }
 
-.viewMode-historyPlayer .btn-sm > img, .viewMode-historyPlayer .btn-group-sm > .btn > img {
+.viewMode-historyPlayer .btn > img {
     height: 12px;
 }
 
-.viewMode-historyPlayer .btn-sm > span, .viewMode-historyPlayer .btn-group-sm > .btn > span {
+.viewMode-historyPlayer .btn > span {
     font-size: 0.78rem;
     line-height: 1.7;
 }
 
-.btn-sm > img + span, .btn-group-sm > .btn > img + span {
+.btn > img + span {
     margin-left: 6px;
 }
 
@@ -202,7 +202,7 @@
    box-shadow: none;
  }
 
- .viewMode-historyPlayer .btn-sm.dropdown-toggle::after, .viewMode-historyPlayer .btn-group-sm > .btn.dropdown-toggle::after {
+ .viewMode-historyPlayer .btn.dropdown-toggle::after {
      vertical-align: 0.16em;
  }
 
@@ -304,6 +304,7 @@ img.flip {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background-color: #f0f0f0;
 }
 
 .viewMode-historyPlayer #cube-shuffle {
@@ -314,10 +315,27 @@ img.flip {
     display: none;
 }
 
+#cube-visibility-toolbar {
+    display: none;
+    background-color: inherit;
+}
+
+#cube.editMode #cube-visibility-toolbar {
+    display: flex;
+}
+
+#cube.editMode {
+    background-color: #ddedff;
+}
+
 #cube-display {
+    margin-top: 50px;
     flex: 1;
-    background-color: #f0f0f0;
     position: relative;
+}
+
+#cube.editMode #cube-display {
+    margin-top: 0;
 }
 
 #cube-display > canvas {
@@ -327,7 +345,6 @@ img.flip {
 }
 
 #cube-control {
-    background-color: #f0f0f0;
     text-align: center;
     padding-top: 20px;
     padding-bottom: 60px;

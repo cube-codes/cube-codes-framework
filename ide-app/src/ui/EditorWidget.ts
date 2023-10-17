@@ -72,7 +72,7 @@ export class EditorWidget {
 		</div>
 		<div class="btn-group btn-group-sm ml-auto">
 			<button type="button" id="editor-docs" class="btn btn-secondary" title="Editor Documentation"><img
-					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/question-square.svg" /></button>
+					src="${this.ui.settings.appDirectory}/images/bootstrap-icons/question-circle.svg" /></button>
 		</div>
 		<div class="btn-group btn-group-sm ml-2">
 			<button type="button" id="editor-show-invisibles" class="btn btn-secondary"

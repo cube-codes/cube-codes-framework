@@ -10,21 +10,29 @@ export class CubeletRealisation extends Group {
 
 	readonly initialLocation: Vector
 
+	readonly base: Mesh
+
+	readonly stickers: Array<Mesh>
+
+	readonly numbers: Array<Mesh>
+
 	constructor(readonly spec: CubeSpecification, readonly solutionCondition: CubeSolutionCondition, cubeletState: CubeletState) {
 
 		super();
 		this.initialLocation = cubeletState.initialLocation;
+		this.stickers = new Array();
+		this.numbers = new Array();
 
 		const maxComponent = (this.spec.edgeLength - 1) / 2;
 		const initialLocationComponentLimit = cubeletState.initialLocation.components.map(c => c === maxComponent ? 1 : c === -maxComponent ? -1 : 0);
 
-		this.createBase();
+		this.base = this.createBase();
 
 		for(let dimension = 0; dimension < 3; dimension++) {
 			if (initialLocationComponentLimit[dimension] !== 0) {
-				this.createSticker(dimension, initialLocationComponentLimit[dimension]);
+				this.stickers.push(this.createSticker(dimension, initialLocationComponentLimit[dimension]));
 				if(solutionCondition.type === CubeSolutionConditionType.STRICT) {
-					this.createNumber(dimension, initialLocationComponentLimit[dimension]);
+					this.numbers.push(...this.createNumber(dimension, initialLocationComponentLimit[dimension]));
 				}
 			}
 		}
@@ -33,7 +41,7 @@ export class CubeletRealisation extends Group {
 
 	}
 
-	private createBase(): void {
+	private createBase(): Mesh {
 
 		const edgeRadius = 0.05;
 		const segmentCount = 10;
@@ -47,6 +55,8 @@ export class CubeletRealisation extends Group {
 		});
 		const mesh = new Mesh(geometry, material);
 		this.add(mesh);
+
+		return mesh;
 
 	}
 
@@ -63,7 +73,7 @@ export class CubeletRealisation extends Group {
 		mesh.position.setComponent(dimension, direction * ((CubeletRealisation.EDGE_LENGTH / 2) - (depth / 2) + out));
 	}
 
-	private createSticker(dimension: number, direction: number): void {
+	private createSticker(dimension: number, direction: number): Mesh {
 
 		const edgeLength = CubeletRealisation.EDGE_LENGTH - 0.05;
 		const out = 0.005;
@@ -76,15 +86,18 @@ export class CubeletRealisation extends Group {
 		const geometry = new RoundedBoxBufferGeometry(edgeLength, edgeLength, depth, edgeRadius, segmentCount);
 		const material = new MeshStandardMaterial({
 			color: color[dimension + (direction === 1 ? 0 : 3)],
-			roughness: roughness
+			roughness: roughness,
+			transparent: true
 		});
 		const mesh = new Mesh(geometry, material);
 		this.add(mesh);
 		this.positionMesh(mesh, dimension, direction, depth, out);
 
+		return mesh;
+
 	}
 
-	private createNumber(dimension: number, direction: number): void {
+	private createNumber(dimension: number, direction: number): Array<Mesh> {
 
 		const font = FONT;
 		const fontSize = 0.3;
@@ -131,6 +144,8 @@ export class CubeletRealisation extends Group {
 		this.add(lineMesh);
 		this.positionMesh(lineMesh, dimension, direction, depth, out);
 		lineMesh.position.setComponent(dimension === 1 ? 2 : 1, (dimension === 1 ? direction : -1) * lineOffset);
+
+		return [mesh, lineMesh];
 
 	}
 

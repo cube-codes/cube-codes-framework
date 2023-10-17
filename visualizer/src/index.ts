@@ -10,4 +10,6 @@ export * from './CubeSituation';
 export * from './CubeVisualizer';
 export * from './Font';
 export * from './RoundedBoxBufferGeometry';
+export * from './StickerClicked';
+export * from './StickerConfiguration';
 export * from './Utils';
